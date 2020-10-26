@@ -19,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/lacker/gpt-js/issues"
   },
-  "homepage": "https://github.com/lacker/gpt-js#readme"
+  "homepage": "https://github.com/lacker/gpt-js#readme",
+  "devDependencies": {
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.3"
+  }
 }
