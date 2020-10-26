@@ -1,0 +1,23 @@
+{
+  "name": "gpt-js",
+  "version": "0.0.1",
+  "description": "An AI model that generates JavaScript.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lacker/gpt-js.git"
+  },
+  "keywords": [
+    "GPT",
+    "javascript"
+  ],
+  "author": "Kevin Lacker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lacker/gpt-js/issues"
+  },
+  "homepage": "https://github.com/lacker/gpt-js#readme"
+}
