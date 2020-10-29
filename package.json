@@ -23,5 +23,8 @@
   "homepage": "https://github.com/lacker/gpt-js#readme",
   "devDependencies": {
     "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "tar-stream": "^2.1.4"
   }
 }
