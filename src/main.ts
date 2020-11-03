@@ -27,7 +27,7 @@ extract.on("entry", (header, stream, next) => {
     if (files % 1000 == 0) {
       console.log(`data: ${JSON.stringify(data, null, 2)}`);
 
-      let entries: any = counter.entries();
+      let entries: any = Array.from(counter.entries());
       entries.sort((a, b) => b[1] - a[1]);
       console.log(`at ${files} files:`);
       for (let [lang, count] of entries) {
