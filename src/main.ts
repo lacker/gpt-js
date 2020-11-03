@@ -21,13 +21,13 @@ extract.on("entry", (header, stream, next) => {
     counter[language] = (counter[language] || 0) + 1;
     files++;
     if (files % 1000 == 0) {
-      console.log(`data: {JSON.stringify(data, null, 2)}`);
+      console.log(`data: ${JSON.stringify(data, null, 2)}`);
 
-      let entries = Object.entries(counter);
+      let entries: any = Object.entries(counter);
       entries.sort((a, b) => b[1] - a[1]);
-      console.log(`at {files} files:`);
+      console.log(`at ${files} files:`);
       for (let [lang, count] of entries) {
-        console.log(`  {count} : {lang}`);
+        console.log(`  ${count} : ${lang}`);
       }
     }
   });
