@@ -17,18 +17,21 @@ extract.on("entry", (header, stream, next) => {
 
   rl.on("line", line => {
     let data = JSON.parse(line);
-    let language = data.repo_language;
-    if (counter.has(language)) {
-      counter.set(language, counter.get(language) + 1);
+    let parts = data.meta.file_name.split(".");
+    let suffix = parts[parts.length - 1];
+    let filetype = data.meta.mime_type;
+    let summary = filetype + "/." + suffix;
+    if (counter.has(summary)) {
+      counter.set(summary, counter.get(summary) + 1);
     } else {
-      counter.set(language, 1);
+      counter.set(summary, 1);
     }
     files++;
     if (files % 1000 == 0) {
-      console.log(`data: ${JSON.stringify(data, null, 2)}`);
+      // console.log(`data: ${JSON.stringify(data, null, 2)}`);
 
       let entries: any = Array.from(counter.entries());
-      entries.sort((a, b) => b[1] - a[1]);
+      entries.sort((a, b) => a[1] - b[1]);
       console.log(`at ${files} files:`);
       for (let [lang, count] of entries) {
         console.log(`  ${count} : ${lang}`);
