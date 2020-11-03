@@ -21,6 +21,8 @@ extract.on("entry", (header, stream, next) => {
     counter[language] = (counter[language] || 0) + 1;
     files++;
     if (files % 1000 == 0) {
+      console.log(`data: {JSON.stringify(data, null, 2)}`);
+
       let entries = counter.entries();
       entries.sort((a, b) => b[1] - a[1]);
       console.log(`at {files} files:`);
