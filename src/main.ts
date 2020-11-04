@@ -5,6 +5,7 @@ import tar from "tar-stream";
 
 let counter = new Map();
 let files = 0;
+let written = 0;
 
 let extract = tar.extract();
 extract.on("entry", (header, stream, next) => {
@@ -26,16 +27,14 @@ extract.on("entry", (header, stream, next) => {
     } else {
       counter.set(summary, 1);
     }
-    files++;
-    if (files % 1000 == 0) {
-      // console.log(`data: ${JSON.stringify(data, null, 2)}`);
 
-      let entries: any = Array.from(counter.entries());
-      entries.sort((a, b) => a[1] - b[1]);
-      console.log(`at ${files} files:`);
-      for (let [lang, count] of entries) {
-        console.log(`  ${count} : ${lang}`);
-      }
+    if (filetype == "text/plain" && suffix == "js") {
+      written++;
+      fs.writeFile(`/d/js/${written}.js`, data.text);
+    }
+
+    if (written % 1000 == 0) {
+      console.log(`${written} .js files written`);
     }
   });
 
