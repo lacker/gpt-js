@@ -30,7 +30,7 @@ extract.on("entry", (header, stream, next) => {
 
     if (filetype == "text/plain" && suffix == "js") {
       written++;
-      fs.writeFile(`/d/js/${written}.js`, data.text);
+      fs.writeFileSync(`/d/js/${written}.js`, data.text);
     }
 
     if (written % 1000 == 0) {
