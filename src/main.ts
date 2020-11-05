@@ -19,15 +19,19 @@ extract.on("entry", (header, stream, next) => {
 
   rl.on("line", line => {
     let data = JSON.parse(line);
+    let ast;
     try {
-      let ast = parse(data.text);
-      written++;
-      fs.writeFileSync(`/d/js/${written}.ts`, data.text);
-      if (written % 100 == 0) {
-        console.log(`${written} code files written. ${skipped} files skipped`);
-      }
+      ast = parse(data.text);
     } catch (e) {
+      console.log(e);
       skipped++;
+      return;
+    }
+
+    written++;
+    fs.writeFileSync(`/d/ts/${written}.ts`, data.text);
+    if (written % 100 == 0) {
+      console.log(`${written} code files written. ${skipped} files skipped`);
     }
   });
 
