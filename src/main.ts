@@ -2,10 +2,11 @@ import fs from "fs";
 import readline from "readline";
 import { ZSTDDecompress } from "simple-zstd";
 import tar from "tar-stream";
+import { parse } from "@typescript-eslint/typescript-estree";
 
 let counter = new Map();
-let files = 0;
 let written = 0;
+let skipped = 0;
 
 let extract = tar.extract();
 extract.on("entry", (header, stream, next) => {
@@ -18,23 +19,15 @@ extract.on("entry", (header, stream, next) => {
 
   rl.on("line", line => {
     let data = JSON.parse(line);
-    let parts = data.meta.file_name.split(".");
-    let suffix = parts[parts.length - 1];
-    let filetype = data.meta.mime_type;
-    let summary = filetype + "/." + suffix;
-    if (counter.has(summary)) {
-      counter.set(summary, counter.get(summary) + 1);
-    } else {
-      counter.set(summary, 1);
-    }
-
-    if (filetype == "text/plain" && suffix == "js") {
+    try {
+      let ast = parse(data.text);
       written++;
-      fs.writeFileSync(`/d/js/${written}.js`, data.text);
-
-      if (written % 1000 == 0) {
-        console.log(`${written} .js files written`);
+      fs.writeFileSync(`/d/js/${written}.ts`, data.text);
+      if (written % 100 == 0) {
+        console.log(`${written} code files written. ${skipped} files skipped`);
       }
+    } catch (e) {
+      skipped++;
     }
   });
 
