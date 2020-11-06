@@ -36,7 +36,10 @@ extract.on("entry", (header, stream, next) => {
     if (lineNumber <= alreadyProcessed) {
       return;
     }
-
+    if (line.length > 10000000) {
+      // 10 mb limit
+      return;
+    }
     let data = JSON.parse(line);
     if (!data.text.includes("import") && !data.text.includes("require")) {
       // I don't care what the parser says, this isn't javascript
