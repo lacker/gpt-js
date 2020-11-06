@@ -16,7 +16,11 @@ for (let file of files) {
   let n = parseInt(s, 10);
   alreadyProcessed = Math.max(alreadyProcessed, n);
 }
-console.log(`already processed through file {n}`);
+console.log(`already processed through file ${alreadyProcessed}`);
+
+process.on("exit", () => {
+  console.log(`exited on line ${lineNumber}`);
+});
 
 let extract = tar.extract();
 extract.on("entry", (header, stream, next) => {
@@ -46,8 +50,7 @@ extract.on("entry", (header, stream, next) => {
       return;
     }
 
-    let fileName = `/d/ts/${lineNumber}.ts`;
-    fs.writeFileSync(`/d/ts/${written}.ts`, data.text);
+    fs.writeFileSync(`/d/ts/${lineNumber}.ts`, data.text);
     written++;
     if (written % 100 == 0) {
       console.log(
