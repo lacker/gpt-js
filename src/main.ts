@@ -34,6 +34,10 @@ extract.on("entry", (header, stream, next) => {
     }
 
     let data = JSON.parse(line);
+    if (!data.text.includes("import") && !data.text.includes("require")) {
+      // I don't care what the parser says, this isn't javascript
+      return;
+    }
     let ast;
     try {
       ast = parse(data.text);
@@ -47,7 +51,7 @@ extract.on("entry", (header, stream, next) => {
     written++;
     if (written % 100 == 0) {
       console.log(
-        `at line ${lineNumber}. ${written} files extracted this session.`
+        `at file ${lineNumber}. ${written} files extracted this session.`
       );
     }
   });
