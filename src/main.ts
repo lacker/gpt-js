@@ -4,9 +4,19 @@ import { ZSTDDecompress } from "simple-zstd";
 import tar from "tar-stream";
 import { parse } from "@typescript-eslint/typescript-estree";
 
-let counter = new Map();
 let written = 0;
-let skipped = 0;
+let lineNumber = 0;
+
+// The max line number we already processed
+let alreadyProcessed = 0;
+
+let files = fs.readdirSync("/d/ts");
+for (let file of files) {
+  let s = file.split(".")[0];
+  let n = parseInt(s, 10);
+  alreadyProcessed = Math.max(alreadyProcessed, n);
+}
+console.log(`already processed through file {n}`);
 
 let extract = tar.extract();
 extract.on("entry", (header, stream, next) => {
@@ -18,20 +28,27 @@ extract.on("entry", (header, stream, next) => {
   });
 
   rl.on("line", line => {
+    lineNumber++;
+    if (lineNumber <= alreadyProcessed) {
+      return;
+    }
+
     let data = JSON.parse(line);
     let ast;
     try {
       ast = parse(data.text);
     } catch (e) {
-      console.log(e);
-      skipped++;
+      // console.log(e);
       return;
     }
 
-    written++;
+    let fileName = `/d/ts/${lineNumber}.ts`;
     fs.writeFileSync(`/d/ts/${written}.ts`, data.text);
+    written++;
     if (written % 100 == 0) {
-      console.log(`${written} code files written. ${skipped} files skipped`);
+      console.log(
+        `at line ${lineNumber}. ${written} files extracted this session.`
+      );
     }
   });
 
