@@ -18,10 +18,6 @@ for (let file of files) {
 }
 console.log(`already processed through file ${alreadyProcessed}`);
 
-process.on("exit", () => {
-  console.log(`exited on line ${lineNumber}`);
-});
-
 let extract = tar.extract();
 extract.on("entry", (header, stream, next) => {
   console.log("header:", header);
