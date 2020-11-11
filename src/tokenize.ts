@@ -35,4 +35,12 @@ function save() {
   fs.writeFileSync(INDEX_FILE, raw);
 }
 
+for (let { name, n } of files) {
+  if (n <= maxFile) {
+    continue;
+  }
+
+  // TODO: process some stuff
+}
+
 save();
