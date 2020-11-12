@@ -40,7 +40,10 @@ for (let { name, n } of files) {
     continue;
   }
 
-  // TODO: process some stuff
+  let raw = fs.readFileSync(name, "utf8");
+  let ast = parse(raw);
+
+  // TODO: figure out how to process ast
 }
 
 save();
