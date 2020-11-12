@@ -35,15 +35,31 @@ function save() {
   fs.writeFileSync(INDEX_FILE, raw);
 }
 
+function getTokens(tree) {
+  let t = tree["type"];
+  let answer = [];
+  if (t == "Program") {
+    for (let subtree of tree.body) {
+      answer = answer.concat(getTokens(subtree));
+    }
+    return answer;
+  }
+
+  console.log(tree);
+  process.exit(1);
+}
+
 for (let { name, n } of files) {
   if (n <= maxFile) {
     continue;
   }
 
-  let raw = fs.readFileSync(name, "utf8");
+  let raw = fs.readFileSync(`/d/ts/${name}`, "utf8");
+  console.log(raw);
   let ast = parse(raw);
-
-  // TODO: figure out how to process ast
+  let tokens = getTokens(ast);
+  console.log(tokens);
+  process.exit(1);
 }
 
 save();
