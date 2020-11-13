@@ -35,6 +35,7 @@ function save() {
   fs.writeFileSync(INDEX_FILE, raw);
 }
 
+// Returns a possibly-nested list of string tokens.
 function getTokens(tree) {
   let t = tree["type"];
   let answer = [];
@@ -43,6 +44,9 @@ function getTokens(tree) {
       answer = answer.concat(getTokens(subtree));
     }
     return answer;
+  }
+  if (t == "ExpressionStatement") {
+    return getTokens(tree.expression);
   }
 
   console.log(tree);
